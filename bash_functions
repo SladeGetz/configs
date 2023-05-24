@@ -1,24 +1,3 @@
-# setup env
-export TREE_DEPTH=2
-
-# aliases
-alias ls="exa --color=always --group-directories-first --grid -xF"
-alias edit="vim"
-
-alias l="ls -a"
-alias ll="ls -alibgHh"
-alias lt=' ll -T --level="$TREE_DEPTH" '
-alias zipPeek="unzip -l"
-alias aliasing=". ~/myScripts/.config_alias.sh"
-alias fixKeyShortCuts="sudo rm ~/Library/Preferences/com.apple.keyboardservicesd.plist && sudo touch ~/Library/Preferences/com.apple.keyboardservicesd.plist"
-alias setTID="sudo ~/myScripts/sudo_tid.sh"
-alias gc="git commit -m"
-alias ga="git add"
-alias ..="cd .."
-alias ...="cd ../.."
-alias cd..=".."
-
-
 # functions
 function binout() {
   if [ -f "$1" ]
@@ -101,4 +80,28 @@ function resetInterfaces() {
       echo $interface '\t\t'SUCCESFULLY STARTED
     fi
   done
+}
+
+function m4aTomp3() {
+	if [[ "$#" -eq 0 ]]; then
+		read infile
+	else
+		infile="$1"
+	fi
+	name="${infile::-4}"
+	ext="${infile:(-3)}"
+
+	if [[ "$ext" != "m4a" ]]; then
+		echo incorrect input format
+		return 1
+	fi
+
+	if [[ "$#" -eq 2 ]]; then
+		outfile="$2"
+	else
+		outfile="${name}.mp3"
+	fi
+
+	ffmpeg -i $infile -codec:a libmp3lame -qscale:a 1 $outfile
+	return 0
 }

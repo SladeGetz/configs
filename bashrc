@@ -62,7 +62,7 @@ HISTTIMEFORMAT='%F %T '
 HISTSIZE=10000
 HISTFILESIZE=10000
 PROMPT_DIRTRIM=3
-EDITOR=vim
+EDITOR=nvim
 
 function __prompt() {
     local EXIT="$?"
@@ -106,6 +106,11 @@ PROMPT_COMMAND=__prompt
 # . ~/myScripts/.config_alias.sh 1
 if [[ -f ~/.bash_alias ]]; then
     . ~/.bash_alias
+fi
+
+# FUNCTIONS
+if [[ -f ~/.bash_functions ]]; then
+	. ~/.bash_functions
 fi
 
 # nnn modify current dir

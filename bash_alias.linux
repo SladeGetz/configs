@@ -1,0 +1,16 @@
+# setup env
+export TREE_DEPTH=2
+
+# aliases
+alias ls="exa --color=always --group-directories-first --grid -xF"
+alias edit="nvim"
+
+alias l="ls -a"
+alias ll="ls -alibgHh"
+alias lt=' ll -T --level="$TREE_DEPTH" '
+alias zipPeek="unzip -l"
+alias gc="git commit -m"
+alias ga="git add"
+alias ..="cd .."
+alias ...="cd ../.."
+alias cd..=".."

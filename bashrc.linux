@@ -55,7 +55,7 @@ function __prompt() {
     local psym="\$"
     local name="\[${pink}\]\u\[${NC}\]"
     local inGIT=""
-    local pyENV=""
+    local virtENV=""
    
     if [[ $(id -u) == "0" ]]; then
         psym="#"
@@ -72,9 +72,17 @@ function __prompt() {
         inGIT="(\[${turquoise}\]$(git branch --show-current)\[${NC}\]) "
     fi
     
-    [ -v VIRTUAL_ENV_PROMPT ] && pyENV="\[${green}\]$VIRTUAL_ENV_PROMPT\[${NC}\]"
+    if [[ -v VIRTUAL_ENV_PROMPT ]]; then 
+        local snake=$'\Uf3e2'
+        virtENV="\[${green}\]$snake $VIRTUAL_ENV_PROMPT\[${NC}\]"
+    elif [[ -v CONDA_DEFAULT_ENV ]]; then 
+        local snake=$'\Ue579'
+        local condaENV="$(echo $CONDA_DEFAULT_ENV \
+        | awk '{print ($1 ~ "/")? gensub(/.*\//, "", 1):$1}')"
+        virtENV="\[${green}\]$snake ($condaENV)\[${NC}\]"
+    fi
                     
-    local prompt="${EXIT}${pyENV}[${name}@\[${pblue}\]\h\[${NC}\]]\w ${inGIT}"
+    local prompt="${EXIT}${virtENV}[${name}@\[${pblue}\]\h\[${NC}\]]\w ${inGIT}"
    # printf '%s\n' "${prompt@P}"
 
     local prompt_length=$(echo "${prompt@P}" | wc -c)

@@ -38,8 +38,56 @@ function act-git-agent() {
 }
 
 function act-venv() {
-  source /home/slarch/.venv/$1/bin/activate
+    if [[ "$#" -ne 1 ]]; then
+        source /home/slarch/.venv/base/bin/activate
+    else
+        source /home/slarch/.venv/$1/bin/activate
+    fi
 }
+
+function act-conda() {
+    if [[ ! -n "$(env | grep conda)" ]]; then
+        source /opt/miniconda3/etc/profile.d/conda.sh
+    elif [[ "$#" -ne 1 && $CONDA_SHLVL -gt 0 ]]; then
+        return 1
+    fi
+
+    if [[ "$#" -ne 1 ]]; then
+        conda activate base
+    else
+        local n=$(($CONDA_SHLVL - 1))
+        for i in {0..n}
+        do
+            conda deactivate
+        done
+        conda activate $1
+    fi
+}
+
+function deactivate-conda() {
+    if [[ ! "$(env | grep -i 'conda\|CONDA')" ]]; then
+        echo 'conda is not activated'
+        return 1
+    fi
+
+    local n=$(($CONDA_SHLVL - 1))
+    for i in {0..n}
+    do
+        conda deactivate
+    done
+
+    # remove conda from path
+    PATH="$(awk -F: '{ for (i=1; i<=NF; ++i) if ($i !~ "conda") printf "%s:", $i } END { if (NF > 0 && $NF !~ "conda") print $NF }' <(echo $PATH))"
+
+    # retrieve any leftover env vars
+    local -a arr
+    readarray -t arr <<< "$(env | grep CONDA | awk -F= '{print $1}' | cut -d' ' -f1)" 
+    for env_var in "${arr[@]}"; do
+        echo "unsetting $env_var"
+        unset $env_var
+    done
+}
+
 
 # nnn modify current dir
 NNN_TMPFILE=${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd

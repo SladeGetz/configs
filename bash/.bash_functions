@@ -19,11 +19,21 @@ function gitall() {
   git push
 }
 
+function sleep-mode-off() {
+   xset s off 
+   xset -dpms
+}
+
+function sleep-mode-on() {
+   xset s on 
+   xset +dpms
+}
+
 function ssh-best-keygen() {
   ssh-keygen -t ed25519 -a 100 -f "$1" -C ""
 }
 
-function act-git-agent() {
+function act-ssh-agent() {
     if [[ "$(ps x | grep -c ssh-agent)" -gt 1 ]]; then
         echo 'ssh agent already running'
         return 0
@@ -37,17 +47,36 @@ function act-git-agent() {
     fi
 }
 
+function vm-setup() {
+    sudo systemctl start virtqemud
+    sudo systemctl start libvirtd
+}
+
 function act-venv() {
     if [[ "$#" -ne 1 ]]; then
-        source /home/slarch/.venv/base/bin/activate
+        source $HOME/.venv/base/bin/activate
     else
-        source /home/slarch/.venv/$1/bin/activate
+        source $HOME/.venv/$1/bin/activate
     fi
 }
 
 function act-conda() {
     if [[ ! -n "$(env | grep conda)" ]]; then
-        source /opt/miniconda3/etc/profile.d/conda.sh
+        # >>> conda initialize >>>
+        # !! Contents within this block are managed by 'conda init' !!
+        __conda_setup="$('$HOME/pkgs/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+        if [ $? -eq 0 ]; then
+            eval "$__conda_setup"
+        else
+            if [ -f "$HOME/pkgs/miniconda3/etc/profile.d/conda.sh" ]; then
+                . "$HOME/pkgs/miniconda3/etc/profile.d/conda.sh"
+            else
+                export PATH="$HOME/pkgs/miniconda3/bin:$PATH"
+            fi
+        fi
+        unset __conda_setup
+        # <<< conda initialize <<<
+
     elif [[ "$#" -ne 1 && $CONDA_SHLVL -gt 0 ]]; then
         return 1
     fi
@@ -130,6 +159,9 @@ function nnn_cd()
     fi  
 }
 
-trap nnn_cd EXIT
+# trap nnn_cd EXIT
 
-
+function rekernel() {
+    doas mkinitcpio -p linux
+    doas grub-mkconfig -o /boot/grub/grub.cfg
+}

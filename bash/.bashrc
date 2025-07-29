@@ -1,5 +1,6 @@
 #
 # ~/.bashrc
+# Slade Getz
 #
 
 # If not running interactively, don't do anything
@@ -31,6 +32,7 @@ set -o ignoreeof
 set -o nounset
 set -o pipefail
 #set -o xtrace          # useful for debuging
+set +u
 
 # Enable options:
 shopt -s cdspell
@@ -49,6 +51,7 @@ HISTSIZE=10000
 HISTFILESIZE=10000
 PROMPT_DIRTRIM=3
 EDITOR=nvim
+ELECTRON_OZONE_PLATFORM_HINT=wayland
 
 function __prompt() {
     local EXIT="$?"

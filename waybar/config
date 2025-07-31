@@ -1,0 +1,95 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 24,
+    "spacing": 5,
+
+    "modules-left": ["hyprland/workspaces", "group/usage"],
+    "modules-center": ["clock"],
+    "modules-right": ["custom/updates", "pulseaudio",  "group/net", "tray", "custom/command_tray"],
+
+    "group/usage": {
+        "orientation": "horizontal",
+        "modules": ["memory", "temperature", "temperature#gpu"]
+    },
+
+    "group/net": {
+        "orientation": "horizontal",
+        "modules": ["network"]
+    },
+
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "on-click": "activate",
+        "format-icons": {
+            "1": "\uf489",
+        },
+        "icon-size": 50,
+        "sort-by-number": true,
+        "persistent-workspaces": {
+            "1": [],
+        }
+    },
+
+    "clock": {
+        "format": "{:%d.%m.%Y | %H:%M }"
+    },
+
+    "pulseaudio": {
+        "format": "\udb81\udd7e  {volume}%",
+        "max-volume": 100,
+        "scroll-step": 5,
+        "on-click": "pavucontrol"
+    },
+
+    "memory": {
+        "interval": 30,
+        "format": "\uefc5  {used:0.1f}G"
+    },
+
+    "temperature": {
+        "hwmon-path": "/sys/class/hwmon/hwmon0/temp1_input",
+        "critical-threshold": 80,
+        "format": "\uf4bc {temperatureC}°C",
+    },
+
+    "temperature#gpu": {
+        "hwmon-path": "/sys/class/hwmon/hwmon2/temp2_input",
+        "critical-threshold": 108,
+        "format": " \udb83\udfb2 {temperatureC}°C",
+    },
+
+    "network": {
+        "interface": "br0",
+        "family": "ipv4",
+        "format-ethernet": "{ipaddr}/{cidr} \udb83\udc9d ",
+        "format-wifi": "{icon} ",
+        "format-disconnected": "\udb83\udc9c ",
+        "format-icons": ["\udb82\udd2f", "\udb82\udd1f", "\udb82\udd22", "\udb82\udd25", "\udb82\udd28"],
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": "{ifname}",
+        "tooltip-format-disconnected": "Disconnected",
+    },
+    "custom/updates": {
+        "format": "\udb81\udeb0 {}",
+        "interval": 300,
+        "exec": "yay -Qu | wc -l",
+        "exec-if": "yay -Qu",
+    },
+
+    "tray": {
+        "icon-size": 16,
+        "spacing": 16
+    },
+    "custom/command_tray": {
+        "format": " \uf011 ",
+        "tooltip": false,
+        "menu": "on-click",
+        "menu-file": "~/.config/waybar/xml/power_menu.xml",
+        "menu-actions": {
+            "shutdown": "poweroff",
+            "reboot": "reboot",
+            "lock": "hyprlock"
+        }
+    }
+}

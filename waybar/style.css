@@ -1,0 +1,70 @@
+/* @define-color foreground #880425; */
+/* /1* #f30086; #000000*/ 
+/* @define-color foreground-inactive #f3e600; */
+/* @define-color background #880425; */
+/* @define-color background-alt #c5003c; */
+/* @define-color error #f30086; */
+/* DRACULA */
+@define-color foreground #bd93f9;
+@define-color foreground-inactive #44475a;
+@define-color background #282a36;
+@define-color background-alt #44475a;
+@define-color error #ff5555;
+
+
+* {
+    font-family: Mononoki Nerd Font;
+    font-size: 17px;
+    padding: 2;
+    margin: 0;
+}
+
+#waybar {
+    color: @foreground;
+    background-color: @background;
+}
+
+#workspaces button {
+    padding-left: 1em;
+    padding-right: 1.3em;
+    color: @foreground-inactive;
+}
+
+#workspaces button.empty {
+    color: @foreground-inactive;
+}
+
+#workspaces button.active {
+    background-color: @foreground-inactive;
+    border-radius: 3px;
+    color: @foreground;
+}
+
+#custom-updates,
+#pulseaudio,
+#tray,
+#usage,
+#net {
+    background-color: @background-alt;
+    border-radius: 3px;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-left: 0.3em;
+}
+
+#memory,
+#language,
+#network {
+    margin-right: 0.8em;
+}
+
+#clock {
+    background-color: @background-alt;
+    border-radius: 3px;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
+#temperature.critical {
+    color: @error
+}

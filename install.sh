@@ -30,9 +30,11 @@ for conf_dir in $(find $SCRIPT_DIR -maxdepth 1 -mindepth 1  -type d -prune | gre
     mkdir -p $CONFIGS/"${conf_dir##*/}"
     cp -r $conf_dir/!(packages) $CONFIGS/"${conf_dir##*/}"
 
-    while read -r pkg; do
-        yay -S "$pkg" --noconfirm
-    done < "$conf_dir/packages"
+    if [[ -e "$conf_dir/packages" ]]; then
+        while read -r pkg; do
+            yay -S "$pkg" --noconfirm
+        done < "$conf_dir/packages"
+    fi
 done
 
 

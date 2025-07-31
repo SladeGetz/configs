@@ -18,7 +18,7 @@ fi
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-CONFIGS="${XDG_CONFIG_HOME:-$HOME/.configs}"
+CONFIGS="${XDG_CONFIG_HOME:-$HOME/.config}"
 
 declare -a EXCLUDE_DIRS=("$@")
 EXCLUDE_DIRS+=('git' 'flags')

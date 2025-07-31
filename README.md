@@ -9,3 +9,9 @@ yay for installing packages
 
 example of excluding waybar and wofi configs:
 `./install.sh waybar wofi`
+
+# TODO:
+- combine installs so we don't need to keep inputting passwords
+- allow excluding flags
+- clean
+- fs more
